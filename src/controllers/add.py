@@ -1,33 +1,22 @@
 from flask import Flask, jsonify, request
-
-data_store = [
-    {
-        "id": 1,
-        "name": "John Doe",
-        "age": 30,
-        "city": "New York"
-    },
-    {
-        "id": 2,
-        "name": "Jane Smith",
-        "age": 25,
-        "city": "Los Angeles"
-    },
-    {
-        "id": 3,
-        "name": "Sam Brown",
-        "age": 22,
-        "city": "Chicago"
-    }
+from data.data_store import data_store
+thingsNeeded = [
+    "id",
+    "name",
+    "age",
+    "city"
 ]
 
-def add_data(new_data):
-
+def add_data():
     new_data = request.get_json()
     if not new_data:
         return jsonify({"error": "No data provided"}), 400
+    for field in thingsNeeded:
+        if field not in new_data:
+            return jsonify({"error": f"Missing field: {field}"}), 400
     for item in data_store:
         if item["id"] == new_data["id"]:
             return jsonify({"error": "ID already exists"}), 400
+        
     data_store.append(new_data)
-    return jsonify(new_data), 201
+    return jsonify({"message": "Data added successfully!", "data": new_data}), 201

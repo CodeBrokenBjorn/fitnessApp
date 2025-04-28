@@ -2,7 +2,8 @@ from flask import Flask
 import pandas as pd
 import numpy as np
 import controllers.retrieve as retrieve
-
+import controllers.add as add
+import controllers.delete as delete
 app = Flask(__name__)
 
 @app.route('/')
@@ -18,8 +19,10 @@ def get_data(data_id):
 @app.route('/data/add', methods=['POST'])
 def add_new_data():
     # Call the add_data function from the add module
-    return retrieve.add_data()
-
+    return add.add_data()
+@app.route('/data/delete/<int:data_id>', methods=['DELETE'])
+def delete_data(data_id):
+    return delete.delete_data(data_id)
 # Route to retrieve all data
 @app.route('/data')
 def data():
