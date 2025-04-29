@@ -4,6 +4,8 @@ import numpy as np
 import controllers.retrieve as retrieve
 import controllers.add as add
 import controllers.delete as delete
+import controllers.update as update
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -25,6 +27,18 @@ def delete_data(data_id):
     return delete.delete_data(data_id)
 # Route to retrieve all data
 @app.route('/data')
+def get_all_data():
+    # Call the retrieve function to get all data
+    return retrieve.get_all_data()
+def update_data(data_id):
+    # Call the update function to update data by ID
+    return update.update_data(data_id)
+@app.route('/data/update/<int:data_id>', methods=['PUT'])
+def update_data_route(data_id):
+    return update.update_data(data_id)
+
+
+
 def data():
     # Create a sample DataFrame
     df = pd.DataFrame({
